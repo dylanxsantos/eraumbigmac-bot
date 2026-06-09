@@ -1,17 +1,10 @@
 {
   "name": "eraumbigmac-bot",
   "version": "1.0.0",
-  "description": "Bot Twitch para giveaways Era Um Big Mac",
   "main": "bot.js",
-  "engines": {
-    "node": ">=18.0.0"
-  },
-  "scripts": {
-    "start": "node bot.js"
-  },
+  "scripts": { "start": "node bot.js" },
   "dependencies": {
     "tmi.js": "^1.8.5",
-    "@supabase/supabase-js": "^2.39.0",
-    "node-fetch": "^3.3.2"
+    "@supabase/supabase-js": "^2.39.0"
   }
 }
