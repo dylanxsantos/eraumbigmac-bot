@@ -111,5 +111,5 @@ console.log('🛒 A ouvir resgates da loja...');
 
 // Keep-alive HTTP server para o Railway
 const http = require('http');
-http.createServer((req, res) => res.end('Bot ERA UM BIG MAC online ✅')).listen(process.env.PORT || 3000);
+http.createServer((req, res) => res.end('Bot ERA UM BIG MAC online ✅')).listen(process.env.PORT || 8080);
 console.log('🌐 Keep-alive server ativo');
