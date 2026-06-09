@@ -5,7 +5,7 @@ const https = require('https');
 const SUPABASE_URL = 'https://iqaqmecbihowhcrfyicn.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlxYXFtZWNiaWhvd2hjcmZ5aWNuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwMDEzMjcsImV4cCI6MjA5NjU3NzMyN30.IMFUVdiz--DfTZcsYxz0QErcEzrkLoX-rnMou5YjKe8';
 const RESEND_API_KEY = 're_dhGu7qx7_GRD43878eiHq2dRbwsoCUL9e';
-const ADMIN_EMAIL = 'eraumbigmac@gmail.com';
+const ADMIN_EMAIL = 'dylanxavierssantos@gmail.com';
 const CHANNEL = 'eraumbigmac_';
 
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -67,6 +67,16 @@ client.on('message', async (channel, tags, message, self) => {
   const isSub = tags['subscriber'] === true || tags['subscriber'] === '1';
   const subTier = tags['badge-info']?.subscriber ? parseInt(tags['badge-info'].subscriber) : 0;
   activeViewers.set(login, { isSub, subTier, displayName: tags['display-name'] || login, lastSeen: Date.now() });
+
+  // Give points per message
+  try {
+    const { data: user } = await sb.from('users').select('id,points').eq('twitch_login', login).single().catch(() => ({ data: null }));
+    if (user) {
+      let pts = 3;
+      if (isSub) pts = subTier >= 3000 ? 12 : subTier >= 2000 ? 9 : 6;
+      await sb.from('users').update({ points: Math.round((user.points || 0) + pts) }).eq('id', user.id);
+    }
+  } catch(e) {}
 
   const msg = message.trim().toLowerCase();
   const { data: giveaway } = await sb.from('giveaways').select('*').eq('status','active').single().catch(() => ({ data: null }));
